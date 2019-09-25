@@ -1,8 +1,10 @@
-package com.smartdevicelink.security;
+package com.sdl.hellosdlsecurity;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+
+import com.smartdevicelink.sdlsecurity.SdlSecurity;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;

@@ -4,7 +4,7 @@
  // Initialize
  extern "C"
  JNIEXPORT jboolean JNICALL
- Java_com_smartdevicelink_security_NativeSSL_initialize(JNIEnv *env, jobject thiz, jbyteArray cert_buffer, jboolean is_client) {
+ Java_com_smartdevicelink_sdlsecurity_NativeSSL_initialize(JNIEnv *env, jobject thiz, jbyteArray cert_buffer, jboolean is_client) {
         jsize len = env->GetArrayLength (cert_buffer);
         jbyte *buf = env->GetByteArrayElements(cert_buffer, 0);
 
@@ -19,14 +19,14 @@
 // Call shutdown
 extern "C"
 JNIEXPORT void JNICALL
-Java_com_smartdevicelink_security_NativeSSL_shutdown(JNIEnv *env, jobject thiz) {
+Java_com_smartdevicelink_sdlsecurity_NativeSSL_shutdown(JNIEnv *env, jobject thiz) {
         shutdown();
 }
 
 // Call runHandshake
 extern "C"
 JNIEXPORT jint JNICALL
-Java_com_smartdevicelink_security_NativeSSL_runHandshake(JNIEnv *env, jobject thiz, jbyteArray input, jbyteArray output) {
+Java_com_smartdevicelink_sdlsecurity_NativeSSL_runHandshake(JNIEnv *env, jobject thiz, jbyteArray input, jbyteArray output) {
         jsize input_len = env->GetArrayLength (input);
         jbyte *input_buf = env->GetByteArrayElements(input, 0);
         jsize output_len = env->GetArrayLength (output);
@@ -43,7 +43,7 @@ Java_com_smartdevicelink_security_NativeSSL_runHandshake(JNIEnv *env, jobject th
 // Call encryptData
 extern "C"
 JNIEXPORT jint JNICALL
-Java_com_smartdevicelink_security_NativeSSL_encryptData(JNIEnv *env, jobject thiz, jbyteArray input, jbyteArray output) {
+Java_com_smartdevicelink_sdlsecurity_NativeSSL_encryptData(JNIEnv *env, jobject thiz, jbyteArray input, jbyteArray output) {
         jsize input_len = env->GetArrayLength (input);
         jbyte *input_buf = env->GetByteArrayElements(input, 0);
         jsize output_len = env->GetArrayLength (output);
@@ -60,7 +60,7 @@ Java_com_smartdevicelink_security_NativeSSL_encryptData(JNIEnv *env, jobject thi
 // Call decryptData
 extern "C"
 JNIEXPORT jint JNICALL
-Java_com_smartdevicelink_security_NativeSSL_decryptData(JNIEnv *env, jobject thiz, jbyteArray input, jbyteArray output) {
+Java_com_smartdevicelink_sdlsecurity_NativeSSL_decryptData(JNIEnv *env, jobject thiz, jbyteArray input, jbyteArray output) {
         jsize input_len = env->GetArrayLength (input);
         jbyte *input_buf = env->GetByteArrayElements(input, 0);
         jsize output_len = env->GetArrayLength (output);

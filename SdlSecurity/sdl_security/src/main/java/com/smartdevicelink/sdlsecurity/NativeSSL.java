@@ -1,4 +1,4 @@
-package com.smartdevicelink.security;
+package com.smartdevicelink.sdlsecurity;
 
 /**
  * Created by Bilal Alsharifi & Bretty on 2019-09-25.

@@ -1,4 +1,4 @@
-package com.smartdevicelink.security;
+package com.smartdevicelink.sdlsecurity;
 
 import android.util.Log;
 
