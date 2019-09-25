@@ -2,10 +2,12 @@ package com.smartdevicelink.sdlsecurity;
 
 import android.util.Log;
 
+import com.smartdevicelink.security.SdlSecurityBase;
+
 /**
  * Created by Bilal Alsharifi & Bretty on 2019-09-25.
  */
-public class SdlSecurity{
+public class SdlSecurity extends SdlSecurityBase {
     private final String TAG = "SdlSecurity";
 
     private final String CERT_URL = "https://sdl-temp.s3.amazonaws.com/server.pfx";
@@ -15,7 +17,7 @@ public class SdlSecurity{
 
     private NativeSSL nativeSSL = null;
 
-
+    @Override
     public void initialize() {
         this.state = STATE_DISCONNECTED;
 
@@ -41,6 +43,7 @@ public class SdlSecurity{
         });
     }
 
+    @Override
     public Integer runHandshake(byte[] inputData, byte[] outputData) {
         if (this.state == STATE_DISCONNECTED){
             Log.e(TAG, "Security not initialized");
@@ -49,6 +52,7 @@ public class SdlSecurity{
         return nativeSSL.runHandshake(inputData, outputData);
     }
 
+    @Override
     public Integer encryptData(byte[] inputData, byte[] outputData) {
         if (this.state == STATE_DISCONNECTED){
             Log.e(TAG, "Security not initialized");
@@ -57,7 +61,7 @@ public class SdlSecurity{
         return nativeSSL.encryptData(inputData, outputData);
     }
 
-
+    @Override
     public Integer decryptData(byte[] inputData, byte[] outputData) {
         if (this.state == STATE_DISCONNECTED){
             Log.e(TAG, "Security not initialized");
@@ -67,6 +71,7 @@ public class SdlSecurity{
 
     }
 
+    @Override
     public void shutDown() {
         if (this.state == STATE_DISCONNECTED){
             return;
