@@ -2,7 +2,11 @@ package com.smartdevicelink.sdlsecurity;
 
 import android.util.Log;
 
+import com.smartdevicelink.protocol.enums.SessionType;
 import com.smartdevicelink.security.SdlSecurityBase;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by Bilal Alsharifi & Bretty on 2019-09-25.
@@ -10,20 +14,22 @@ import com.smartdevicelink.security.SdlSecurityBase;
 public class SdlSecurity extends SdlSecurityBase {
     private final String TAG = "SdlSecurity";
 
-    private final String CERT_URL = "https://sdl-temp.s3.amazonaws.com/server.pfx";
     private final int STATE_DISCONNECTED = 0;
     private final int STATE_INITIALIZED = 1;
     private int state;
 
     private NativeSSL nativeSSL = null;
 
+    private List<SessionType> serviceList;
+
     @Override
     public void initialize() {
         this.state = STATE_DISCONNECTED;
 
         nativeSSL = new NativeSSL();
+        serviceList = new ArrayList<>();
         Log.i(TAG, "Downloading certificate");
-        Tools.downloadCert(CERT_URL, new DownloadListener() {
+        Tools.downloadCert(Constants.CERT_URL, new DownloadListener() {
             @Override
             public void onSuccess(byte[] certBuffer) {
                 boolean success = nativeSSL.initialize(certBuffer, false);
@@ -33,11 +39,13 @@ public class SdlSecurity extends SdlSecurityBase {
                     SdlSecurity.this.state = STATE_DISCONNECTED;
                     Log.e(TAG, "nativeSSL.initialize() failed");
                 }
+                handleInitResult(success);
             }
 
             @Override
             public void onFail(String error) {
                 SdlSecurity.this.state = STATE_DISCONNECTED;
+                handleInitResult(false);
                 Log.e(TAG, "onFail: " + error);
             }
         });
@@ -77,6 +85,17 @@ public class SdlSecurity extends SdlSecurityBase {
             return;
         }
         nativeSSL.shutdown();
+        serviceList.clear();
         this.state = STATE_DISCONNECTED;
+    }
+
+    @Override
+    public List<String> getMakeList() {
+        return Constants.MAKE_LIST;
+    }
+
+    @Override
+    public List<SessionType> getServiceList() {
+        return serviceList;
     }
 }
