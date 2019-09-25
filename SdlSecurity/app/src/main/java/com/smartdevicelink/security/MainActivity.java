@@ -4,11 +4,8 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 
-import java.io.ByteArrayOutputStream;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.nio.charset.StandardCharsets;
@@ -47,40 +44,37 @@ public class MainActivity extends AppCompatActivity {
                         dOut.write(msg.getBytes());
 
                         // Init TLS engine
-                        NativeSSL nativeSSL = new NativeSSL();
-                        byte[] certBuffer = toByteArray(getResources().openRawResource(R.raw.server));
-                        boolean success = nativeSSL.initialize(certBuffer, false);
-                        if (!success) {
-                            Log.i(TAG, "nativeSSL.initialize() failed");
-                        }
+                        SdlSecurity sdlSecurity = new SdlSecurity();
+                        sdlSecurity.initialize();
+                        Log.i(TAG, "Waiting for SdlSecurity to initialize");
+                        Thread.sleep(2000);
 
                         // Do handshake w/ client
                         Log.i(TAG, "Handshake step 1: receiving ClientHello");
                         byte[] bufferOutput = new byte[BUFFER_SIZE];
                         dIn.read(buffer);
                         Log.i(TAG, "Handshake step 2: sending ServerHello");
-                        nativeSSL.runHandshake(buffer, bufferOutput);
+                        sdlSecurity.runHandshake(buffer, bufferOutput);
                         dOut.write(bufferOutput);
                         Log.i(TAG, "Handshake step 3: receiving change cipher spec");
                         dIn.read(buffer);
-                        nativeSSL.runHandshake(buffer, bufferOutput);
+                        sdlSecurity.runHandshake(buffer, bufferOutput);
                         Log.i(TAG, "Handshake step 4: finished");
                         dOut.write(bufferOutput);
                         // end handshake
 
                         // receive an encrypted message
                         dIn.read(buffer);
-                        bytes = nativeSSL.decryptData(buffer, bufferOutput);
+                        bytes = sdlSecurity.decryptData(buffer, bufferOutput);
                         Log.i(TAG, "From client: " + new String(bufferOutput, StandardCharsets.UTF_8).substring(0, bytes));
                         msg = "I hear you! (encrypted)";
                         Log.i(TAG, "To client: " + msg);
-                        nativeSSL.encryptData(msg.getBytes(), bufferOutput);
+                        sdlSecurity.encryptData(msg.getBytes(), bufferOutput);
                         dOut.write(bufferOutput);
-
 
                         // shutdown
                         Log.i(TAG, "shutdown");
-                        nativeSSL.shutdown();
+                        sdlSecurity.shutDown();
 
                     }
                 } catch (Exception e) {
@@ -91,17 +85,5 @@ public class MainActivity extends AppCompatActivity {
 
         t.start();
 
-    }
-
-    public static byte[] toByteArray(InputStream in) throws IOException {
-        ByteArrayOutputStream os = new ByteArrayOutputStream();
-        byte[] buffer = new byte[4096];
-        int len;
-        // read bytes from the input stream and store them in buffer
-        while ((len = in.read(buffer)) != -1) {
-            // write bytes from the buffer into output stream
-            os.write(buffer, 0, len);
-        }
-        return os.toByteArray();
     }
 }
