@@ -1,0 +1,2 @@
+include ':app', ':sdl_security'
+rootProject.name='SdlSecurity'
