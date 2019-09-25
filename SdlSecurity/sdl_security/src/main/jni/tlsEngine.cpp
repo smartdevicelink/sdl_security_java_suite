@@ -7,7 +7,11 @@
 #include <openssl/bio.h>
 #include <openssl/conf.h>
 #include <openssl/pkcs12.h>
-#include <android/log.h>
+
+#ifdef ANDROID
+    #include <android/log.h>
+    #define printf(...) ((void)__android_log_print(ANDROID_LOG_INFO, "SdlSecurity_Native", __VA_ARGS__))
+#endif
 
 // TLS engine error codes
 const int TLS_ERROR_NONE = 0;
@@ -27,7 +31,7 @@ const int STATE_INITIALIZED = 1;
 
 const int BUFFER_SIZE_MAX = 4096;
 const char *CERT_PASS = "password"; // This needs to be changed to your own password
-#define printf(...) ((void)__android_log_print(ANDROID_LOG_INFO, "SdlSecurity_Native", __VA_ARGS__))
+
 
 SSL* ssl = NULL;
 SSL_CTX *ctx;
