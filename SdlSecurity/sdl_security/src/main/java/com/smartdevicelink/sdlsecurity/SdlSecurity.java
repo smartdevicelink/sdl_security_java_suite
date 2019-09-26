@@ -27,7 +27,6 @@ public class SdlSecurity extends SdlSecurityBase {
         this.state = STATE_DISCONNECTED;
 
         nativeSSL = new NativeSSL();
-        serviceList = new ArrayList<>();
         Log.i(TAG, "Downloading certificate");
         Tools.downloadCert(Constants.CERT_URL, new DownloadListener() {
             @Override
@@ -81,11 +80,13 @@ public class SdlSecurity extends SdlSecurityBase {
 
     @Override
     public void shutDown() {
-        if (this.state == STATE_DISCONNECTED){
+        if (this.state == STATE_DISCONNECTED) {
             return;
         }
         nativeSSL.shutdown();
-        serviceList.clear();
+        if (serviceList != null){
+            serviceList.clear();
+        }
         this.state = STATE_DISCONNECTED;
     }
 
@@ -96,6 +97,9 @@ public class SdlSecurity extends SdlSecurityBase {
 
     @Override
     public List<SessionType> getServiceList() {
+        if (serviceList == null) {
+            serviceList = new ArrayList<>();
+        }
         return serviceList;
     }
 }
