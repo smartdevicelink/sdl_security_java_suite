@@ -8,5 +8,5 @@ import java.util.List;
  */
 public class Constants {
     final static String CERT_URL = "https://sdl-temp.s3.amazonaws.com/server.pfx";
-    final static List<String> MAKE_LIST = Collections.singletonList("Example");
+    final static List<String> MAKE_LIST = Collections.singletonList("Ford");
 }
