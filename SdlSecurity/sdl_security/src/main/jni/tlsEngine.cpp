@@ -44,6 +44,7 @@ int state;
 // Nice article to read: http://www.roxlu.com/2014/042/using-openssl-with-memory-bios
 
 void shutdown() {
+    printf("Shutting down");
     if (state != STATE_INITIALIZED)
     {
         return;
@@ -104,6 +105,7 @@ void clean_up_initialization(X509* cert, RSA* rsa, PKCS12* p12, BIO *pbio, EVP_P
 }
 
 bool initialize(void* cert_buffer, int cert_len, bool is_client) {
+    printf("initializing");
     PKCS12 *p12 = NULL;
     EVP_PKEY *pkey = NULL;
     X509 *certX509 = NULL;
@@ -328,6 +330,7 @@ bool tls_handshake()
 }
 
 int run_handshake(void *buf1, int len1, void *buf2, int len2) {
+    printf("run_handshake");
     if (bio_write_data(buf1, len1) < 0)
     {
       return -1;
@@ -340,7 +343,7 @@ int run_handshake(void *buf1, int len1, void *buf2, int len2) {
 
 int encrypt_data(void *buf1, int len1, void *buf2, int len2) {
     if (!tls_handshake()) {
-        printf ("TLS is not initialzed \n");
+        printf ("TLS is not initialized \n");
         return -1;
     }
     
