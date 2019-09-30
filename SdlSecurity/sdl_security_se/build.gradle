@@ -1,0 +1,13 @@
+apply plugin: 'java-library'
+
+dependencies {
+    api fileTree(dir: 'libs', include: ['*.jar'])
+    api 'smartdevicelink:sdl_java_se:4.9.1'
+}
+
+sourceSets {
+    main.java.srcDirs += '../sdl_security/src/main/java'
+}
+
+sourceCompatibility = "7"
+targetCompatibility = "7"

@@ -1,2 +1,2 @@
-include ':app', ':sdl_security'
+include ':app', ':sdl_security', ':sdl_security_se'
 rootProject.name='SdlSecurity'
