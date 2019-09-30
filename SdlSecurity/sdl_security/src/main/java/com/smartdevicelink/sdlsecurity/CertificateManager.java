@@ -9,7 +9,7 @@ import java.net.URLConnection;
 /**
  * Created by Bilal Alsharifi & Bretty on 2019-09-25.
  */
-class Tools {
+class CertificateManager {
 
     static byte[] toByteArray(InputStream in) throws IOException {
         ByteArrayOutputStream os = new ByteArrayOutputStream();
