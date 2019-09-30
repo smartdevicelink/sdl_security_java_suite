@@ -20,10 +20,10 @@ class NativeSSL {
 	}
 
 	NativeSSL(){}
-
+	
 	native boolean initialize(byte[] certBuffer, boolean isClient);
 	native int runHandshake(byte[] input, byte[] output);
 	native int encryptData(byte[] input, byte[] output);
-	native int decryptData(byte[] input , byte[] output);
+	native int decryptData(byte[] input, byte[] output);
 	native void shutdown();
 }
