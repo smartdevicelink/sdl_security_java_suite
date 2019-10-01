@@ -91,7 +91,6 @@ output.json
 *.lo
 # Shared objects (inc. Windows DLLs)
 *.dll
-*.dylib
 # Executables
 *.exe
 *.out
