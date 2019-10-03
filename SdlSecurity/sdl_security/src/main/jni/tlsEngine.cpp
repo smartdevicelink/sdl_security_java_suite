@@ -8,9 +8,12 @@
 #include <openssl/conf.h>
 #include <openssl/pkcs12.h>
 
+#define LOG_TAG "SdlSecurity_Native"
 #ifdef ANDROID
     #include <android/log.h>
-    #define printf(...) ((void)__android_log_print(ANDROID_LOG_INFO, "SdlSecurity_Native", __VA_ARGS__))
+    #define printf(...) ((void)__android_log_print(ANDROID_LOG_INFO, LOG_TAG, __VA_ARGS__))
+#else
+    #define printf(...) printf("\n%s - %s", LOG_TAG, __VA_ARGS__); fflush(stdout);
 #endif
 
 // TLS engine error codes
