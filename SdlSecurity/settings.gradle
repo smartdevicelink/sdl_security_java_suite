@@ -1,2 +1,2 @@
-include ':app', ':appJava', ':sdl_security', ':sdl_security_se'
+include ':sdl_security', ':sdl_security_se'
 rootProject.name='SdlSecurity'
