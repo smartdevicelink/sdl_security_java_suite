@@ -14,7 +14,7 @@ class NativeSSL {
 			System.loadLibrary("security");
 		} catch(java.lang.UnsatisfiedLinkError e){
 			// For JavaSE
-			File lib = new File("sdl_security_se/src/main/libs/" + System.mapLibraryName("security"));
+			File lib = new File("/Users/bilal/AndroidStudioProjects/sdl_security_java_suite/SdlSecurity/sdl_security_se/src/main/libs/" + System.mapLibraryName("security"));
 			System.load(lib.getAbsolutePath());
 		}
 	}

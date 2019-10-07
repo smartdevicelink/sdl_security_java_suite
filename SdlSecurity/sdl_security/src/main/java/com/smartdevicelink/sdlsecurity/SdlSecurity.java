@@ -28,7 +28,7 @@ public class SdlSecurity extends SdlSecurityBase {
 
         nativeSSL = new NativeSSL();
         Log.i(TAG, "Downloading certificate");
-        CertificateManager.downloadCert(Constants.CERT_URL, new DownloadListener() {
+        CertificateManager.downloadCert(Constants.CERT_URL, getAppId(), new DownloadListener() {
             @Override
             public void onSuccess(byte[] certBuffer) {
                 boolean success = nativeSSL.initialize(certBuffer, false);
