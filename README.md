@@ -17,4 +17,4 @@ secList.add(SdlSecurity.class);
 builder.setSdlSecurity(secList, null);
 ```
 
-They then also pass in the name of the Vehicle Makes that library is used for, for example, a Ford library may be used for `["Ford", "Lincoln"]`. This must match what is passed through the `register app interface` RPC response.
+They then also pass in the name of the Vehicle Makes that library is used for, for example, a Ford library may be used for `["Ford", "Lincoln"]`. This must match what is passed through the `register app interface` RPC response. For more infomration on how to setup the library, please check the resources folder.
