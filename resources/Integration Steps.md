@@ -9,7 +9,7 @@ CertificatePath = client.crt
 KeyPath         = client.key
 ```
 
-* Turn off `VerifyPeer` in `smartDeviceLink.ini`:
+* Turn off `VerifyPeer` in `smartDeviceLink.ini`
 ```
 VerifyPeer  = false
 ```
