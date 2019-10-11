@@ -26,7 +26,7 @@ APP_PLATFORM := android-21
 ```
 - in your `Android.mk` file,  you should have something like this:
 
-```
+```c++
 LOCAL_PATH := $(call my-dir)
 
 # Prebuilt libssl
