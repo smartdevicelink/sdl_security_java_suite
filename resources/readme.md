@@ -28,7 +28,7 @@ implementation (project(path: ':sdl_security')) {
 ```
 Note: Use `sdl_security_se` instead of `sdl_security` for cloud apps
 
-* Set `SdlSecurity` class in the `SdlManager`'s builder 
+* Set `SdlSecurity` class in the `SdlManager`'s builder
 ```
 List<Class<? extends SdlSecurityBase>> secList = new ArrayList<>();
 secList.add(SdlSecurity.class);
