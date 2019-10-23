@@ -4,9 +4,9 @@
 - Take note of the SDK Location path, you need to open this and get the path of the NDK for the next step 
 - Set appropriate environment paths for your machine in `.bash_profile`:
 ```
-export ANDROID_SDK=/Users/youruser/Library/Android/sdk
-export ANDROID_NDK=/Users/youruser/Library/Android/sdk/ndk/20.0.5594570
-export PATH=$PATH:/Users/youruser/Library/Android/sdk/ndk/20.0.5594570/
+export ANDROID_SDK=~/Library/Android/sdk
+export ANDROID_NDK=~/Library/Android/sdk/ndk/20.0.5594570
+export PATH=$PATH:~/Library/Android/sdk/ndk/20.0.5594570/
 ```
 - exit and re-enter the terminal for the new changes to take effect
 - install WGET with brew: `brew install wget`
