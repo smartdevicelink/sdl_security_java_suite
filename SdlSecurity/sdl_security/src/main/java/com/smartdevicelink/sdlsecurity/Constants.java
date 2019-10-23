@@ -1,6 +1,6 @@
 package com.smartdevicelink.sdlsecurity;
 
-import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -8,5 +8,5 @@ import java.util.List;
  */
 class Constants {
     final static String CERT_URL = "http://www.mocky.io/v2/5d9b565132000072002ae80f";
-    final static List<String> MAKE_LIST = Arrays.asList("Ford", "SDL");
+    final static List<String> MAKE_LIST = Collections.singletonList("SDL");
 }
