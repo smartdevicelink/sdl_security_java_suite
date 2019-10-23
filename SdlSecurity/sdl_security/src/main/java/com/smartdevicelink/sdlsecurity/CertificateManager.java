@@ -69,6 +69,7 @@ class CertificateManager {
                     JSONObject jsonResponse = new JSONObject(response.toString());
                     JSONObject dataJsonObject = (JSONObject) jsonResponse.get("data");
                     String certStringBase64 = dataJsonObject.getString("certificate");
+                    // To use with Android pre 26, use byte[] certBuffer = android.util.Base64.decode(certStringBase64.getBytes(), android.util.Base64.DEFAULT);
                     byte[] certBuffer = Base64.getDecoder().decode(certStringBase64);
                     listener.onSuccess(certBuffer);
                 } catch (Exception e) {
