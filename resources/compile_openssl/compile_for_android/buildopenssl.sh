@@ -22,7 +22,8 @@ set -u
 
 OPENSSL_VERSION=1.1.1a
 
-API_LEVEL=21
+API_LEVEL=16
+API_LEVEL_64=21 # Android versions pre 21 don't support 64 architectures
 
 SOURCE="$0"
 while [ -h "$SOURCE" ]; do
@@ -97,14 +98,14 @@ do
     x86_64)
         TRIBLE="x86_64-linux-android"
         TC_NAME="x86_64-4.9"
-        OPTIONS="-fPIC -D__ANDROID_API__=${API_LEVEL}"
+        OPTIONS="-fPIC -D__ANDROID_API__=${API_LEVEL_64}"
         DESTDIR="$BUILD_DIR/x86_64"
         SSL_TARGET="android-x86_64"
     ;;
     arm64-v8a)
         TRIBLE="aarch64-linux-android"
         TC_NAME="aarch64-linux-android-4.9"
-        OPTIONS="-fPIC -D__ANDROID_API__=${API_LEVEL}"
+        OPTIONS="-fPIC -D__ANDROID_API__=${API_LEVEL_64}"
         DESTDIR="$BUILD_DIR/arm64-v8a"
         SSL_TARGET="android-arm64"
     ;;

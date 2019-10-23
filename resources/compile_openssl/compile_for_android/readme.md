@@ -22,7 +22,6 @@ export PATH=$PATH:~/Library/Android/sdk/ndk/20.0.5594570/
 ```c++
 APP_STL := c++_static
 APP_ABI := arm64-v8a x86 x86_64
-APP_PLATFORM := android-21
 ```
 - in your `Android.mk` file,  you should have something like this:
 
