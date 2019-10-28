@@ -1,6 +1,8 @@
 package com.smartdevicelink.sdlsecurity;
 
-import java.io.File;
+import java.io.IOException;
+
+import cz.adamh.utils.NativeUtils;
 
 /**
  * Created by Bilal Alsharifi & Bretty on 2019-09-25.
@@ -14,8 +16,11 @@ class NativeSSL {
 			System.loadLibrary("security");
 		} catch(java.lang.UnsatisfiedLinkError e){
 			// For JavaSE
-			File lib = new File("/Users/bilal/AndroidStudioProjects/sdl_security_java_suite/SdlSecurity/sdl_security_se/src/main/libs/" + System.mapLibraryName("security"));
-			System.load(lib.getAbsolutePath());
+			try {
+				NativeUtils.loadLibraryFromJar("/libs/libsecurity.dylib");
+			} catch (IOException ex) {
+				ex.printStackTrace();
+			}
 		}
 	}
 
