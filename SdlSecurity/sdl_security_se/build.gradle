@@ -1,0 +1,28 @@
+apply plugin: 'java-library'
+
+group 'com.smartdevicelink'
+version '1.0'
+
+sourceCompatibility = 1.7
+
+// This extraLibs solution is explained here: https://discuss.gradle.org/t/how-to-include-dependencies-in-jar/19571/5
+configurations {
+    // configuration that holds jars to include in the jar
+    extraLibs
+}
+
+dependencies {
+    extraLibs fileTree(dir: 'libs', include: ['*.jar'])
+    extraLibs 'smartdevicelink:sdl_java_se:4.10.0'
+    configurations.api.extendsFrom(configurations.extraLibs)
+}
+
+sourceSets {
+    main.java.srcDirs += '../sdl_security/src/main/java'
+}
+
+jar {
+    from {
+        configurations.extraLibs.collect { it.isDirectory() ? it : zipTree(it) }
+    }
+}
