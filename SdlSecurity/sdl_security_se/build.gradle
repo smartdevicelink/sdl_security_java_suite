@@ -13,7 +13,7 @@ configurations {
 
 dependencies {
     extraLibs fileTree(dir: 'libs', include: ['*.jar'])
-    extraLibs 'smartdevicelink:sdl_java_se:RC3-4.10.0'
+    extraLibs 'smartdevicelink:sdl_java_se:4.10.0'
     configurations.api.extendsFrom(configurations.extraLibs)
 }
 
