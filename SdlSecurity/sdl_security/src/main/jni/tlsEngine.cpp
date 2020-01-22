@@ -34,8 +34,8 @@ const int STATE_INITIALIZED = 1;
 
 
 const int BUFFER_SIZE_MAX = 4096;
-const char *CERT_PASS = "password"; // This needs to be changed to your own password
-const char *CERT_ISSUER = "/C=US/ST=Michigan/L=Detroit/O=FORD_SERVER/OU=FORD_SDL_SERVER/CN=FORD/emailAddress=sample@ford.com"; // This needs to be changed to the actual issuer
+const char *CERT_PASS = "password"; // This needs to be changed to the actual certificate password
+const char *CERT_ISSUER = "SDL"; // This needs to be changed to the actual certificate issuer
 
 
 SSL* ssl = NULL;
