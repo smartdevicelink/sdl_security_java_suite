@@ -34,6 +34,7 @@ const int STATE_INITIALIZED = 1;
 
 const int BUFFER_SIZE_MAX = 4096;
 const char *CERT_PASS = "password"; // This needs to be changed to your own password
+const char *CERT_ISSUER = "/C=US/ST=Michigan/L=Detroit/O=FORD_SERVER/OU=FORD_SDL_SERVER/CN=FORD/emailAddress=sample@ford.com"; // This needs to be changed to the actual issuer
 
 
 SSL* ssl = NULL;
@@ -157,8 +158,13 @@ bool initialize(void* cert_buffer, int cert_len, bool is_client) {
         clean_up_initialization(certX509, rsa, p12, pbio, pkey);
         return false;
     }
-    
-    // To do: should check certificate date and issuer
+
+    char* cert_issuer = X509_NAME_oneline(X509_get_issuer_name(certX509), NULL, 0);
+    if (strcmp(cert_issuer, CERT_ISSUER) != 0) {
+        printf("Error in verifying issuer name. Expected %s but found %s\n", CERT_ISSUER, cert_issuer);
+        //clean_up_initialization(certX509, rsa, p12, pbio, pkey);
+        //return false;
+    }
     
     rsa = EVP_PKEY_get1_RSA(pkey);
     if (rsa == NULL)
