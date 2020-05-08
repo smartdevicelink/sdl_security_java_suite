@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <unistd.h>
 #include <stdlib.h>
+#include <time.h>
 #include <memory.h>
 #include <openssl/ssl.h>
 #include <openssl/err.h>
@@ -33,7 +34,8 @@ const int STATE_INITIALIZED = 1;
 
 
 const int BUFFER_SIZE_MAX = 4096;
-const char *CERT_PASS = "password"; // This needs to be changed to your own password
+const char *CERT_PASS = "password"; // This needs to be changed to the actual certificate password
+const char *CERT_ISSUER = "SDL"; // This needs to be changed to the actual certificate issuer
 
 
 SSL* ssl = NULL;
@@ -105,6 +107,59 @@ void clean_up_initialization(X509* cert, RSA* rsa, PKCS12* p12, BIO *pbio, EVP_P
     }
 }
 
+int get_date_component(const unsigned char *str, const int start, const int size) {
+    char date_component[size + 1];
+    memcpy(date_component, &str[start], size);
+    date_component[size] = '\0';
+    int date_component_num = (int) strtol(date_component, (char **)NULL, 10);
+    return date_component_num;
+}
+
+bool cert_date_valid(X509 *certificateX509) {
+    if (certificateX509 != NULL) {
+        ASN1_TIME *time2 = X509_get_notAfter(certificateX509);
+        if (time2 != NULL) {
+            ASN1_GENERALIZEDTIME *time2_generalized = ASN1_TIME_to_generalizedtime(time2, NULL);
+            if (time2_generalized != NULL) {
+                const unsigned char *time2_data = ASN1_STRING_get0_data(time2_generalized);
+
+                // ASN1 generalized times look like this: "20131114230046Z"
+                //                                format:  YYYYMMDDHHMMSS
+                //                               indices:  01234567890123
+                //                                                   1111
+                // There are other formats (e.g. specifying partial seconds or
+                // time zones) but this is good enough for our purposes since
+                // we only use the date and not the time.
+                //
+                // (Source: http://www.obj-sys.com/asn1tutorial/node14.html)
+
+                int year2 = get_date_component(time2_data, 0, 4);
+                int month2 = get_date_component(time2_data, 4, 2);
+                int day2 = get_date_component(time2_data, 6, 2);
+
+                time_t t = time(NULL);
+                struct tm tm = *localtime(&t);
+                int year = tm.tm_year + 1900;
+                int month = tm.tm_mon + 1;
+                int day = tm.tm_mday;
+
+                if(year2 > year){
+                    return true;
+                } else if(year2 == year){
+                    if(month2 > month){
+                        return true;
+                    } else if(month2 == month){
+                        if(day2 > day){
+                            return true;
+                        }
+                    }
+                }
+            }
+        }
+    }
+    return false;
+}
+
 bool initialize(void* cert_buffer, int cert_len, bool is_client) {
     printf("initializing \n");
     PKCS12 *p12 = NULL;
@@ -157,8 +212,19 @@ bool initialize(void* cert_buffer, int cert_len, bool is_client) {
         clean_up_initialization(certX509, rsa, p12, pbio, pkey);
         return false;
     }
-    
-    // To do: should check certificate date and issuer
+
+    if (!cert_date_valid(certX509)) {
+        printf("Error in validating the certificate. Certificate has expired!\n");
+        clean_up_initialization(certX509, rsa, p12, pbio, pkey);
+        return false;
+    }
+
+    char* cert_issuer = X509_NAME_oneline(X509_get_issuer_name(certX509), NULL, 0);
+    if (strcmp(cert_issuer, CERT_ISSUER) != 0) {
+        printf("Error in verifying issuer name. Expected %s but found %s\n", CERT_ISSUER, cert_issuer);
+        // we are only printing error message in that case to make testing easier
+        // it should stop initialization and return false in production libraries
+    }
     
     rsa = EVP_PKEY_get1_RSA(pkey);
     if (rsa == NULL)
