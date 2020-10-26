@@ -173,6 +173,7 @@ bool initialize(JNIEnv* env, void* cert_buffer, int cert_len, bool is_client) {
 
     if (bufferSizeFieldId == NULL || certPassFieldId == NULL || certIssuerFieldId == NULL) {
         printf("fieldId == null");
+        return false;
     } else {
         jint javaBufferSize = env->GetStaticIntField(javaConstantsClass, bufferSizeFieldId);
         jstring javaCertPass = (jstring) env->GetStaticObjectField(javaConstantsClass, certPassFieldId);
