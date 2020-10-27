@@ -34,7 +34,7 @@ const int STATE_DISCONNECTED = 0;
 const int STATE_INITIALIZED = 1;
 
 
-int BUFFER_SIZE_MAX = 0;
+const int BUFFER_SIZE_MAX = 4096;
 const char *CERT_PASS = "";
 const char *CERT_ISSUER = "";
 
@@ -167,19 +167,16 @@ bool initialize(JNIEnv* env, void* cert_buffer, int cert_len, bool is_client) {
     //Get constants from java class
     jclass javaConstantsClass = env->FindClass("com/smartdevicelink/sdlsecurity/Constants");
 
-    jfieldID bufferSizeFieldId = env->GetStaticFieldID(javaConstantsClass, "BUFFER_SIZE_MAX", "I");
     jfieldID certPassFieldId = env->GetStaticFieldID(javaConstantsClass, "CERT_PASS", "Ljava/lang/String;");
     jfieldID certIssuerFieldId = env->GetStaticFieldID(javaConstantsClass, "CERT_ISSUER", "Ljava/lang/String;");
 
-    if (bufferSizeFieldId == NULL || certPassFieldId == NULL || certIssuerFieldId == NULL) {
+    if (certPassFieldId == NULL || certIssuerFieldId == NULL) {
         printf("fieldId == null");
         return false;
     } else {
-        jint javaBufferSize = env->GetStaticIntField(javaConstantsClass, bufferSizeFieldId);
         jstring javaCertPass = (jstring) env->GetStaticObjectField(javaConstantsClass, certPassFieldId);
         jstring javaCertIssuer = (jstring) env->GetStaticObjectField(javaConstantsClass, certIssuerFieldId);
 
-        BUFFER_SIZE_MAX = (int) javaBufferSize;
         CERT_PASS = env->GetStringUTFChars(javaCertPass, JNI_FALSE);
         CERT_ISSUER = env->GetStringUTFChars(javaCertIssuer, JNI_FALSE);
     }
