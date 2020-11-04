@@ -8,6 +8,7 @@
 #include <openssl/bio.h>
 #include <openssl/conf.h>
 #include <openssl/pkcs12.h>
+#include <jni.h>
 
 #define LOG_TAG "SdlSecurity_Native"
 #ifdef ANDROID
@@ -34,8 +35,8 @@ const int STATE_INITIALIZED = 1;
 
 
 const int BUFFER_SIZE_MAX = 4096;
-const char *CERT_PASS = "password"; // This needs to be changed to the actual certificate password
-const char *CERT_ISSUER = "SDL"; // This needs to be changed to the actual certificate issuer
+const char *CERT_PASS = "";
+const char *CERT_ISSUER = "";
 
 
 SSL* ssl = NULL;
@@ -160,8 +161,26 @@ bool cert_date_valid(X509 *certificateX509) {
     return false;
 }
 
-bool initialize(void* cert_buffer, int cert_len, bool is_client) {
+bool initialize(JNIEnv* env, void* cert_buffer, int cert_len, bool is_client) {
     printf("initializing \n");
+
+    //Get constants from java class
+    jclass javaConstantsClass = env->FindClass("com/smartdevicelink/sdlsecurity/Constants");
+
+    jfieldID certPassFieldId = env->GetStaticFieldID(javaConstantsClass, "CERT_PASS", "Ljava/lang/String;");
+    jfieldID certIssuerFieldId = env->GetStaticFieldID(javaConstantsClass, "CERT_ISSUER", "Ljava/lang/String;");
+
+    if (certPassFieldId == NULL || certIssuerFieldId == NULL) {
+        printf("fieldId == null");
+        return false;
+    } else {
+        jstring javaCertPass = (jstring) env->GetStaticObjectField(javaConstantsClass, certPassFieldId);
+        jstring javaCertIssuer = (jstring) env->GetStaticObjectField(javaConstantsClass, certIssuerFieldId);
+
+        CERT_PASS = env->GetStringUTFChars(javaCertPass, JNI_FALSE);
+        CERT_ISSUER = env->GetStringUTFChars(javaCertIssuer, JNI_FALSE);
+    }
+
     PKCS12 *p12 = NULL;
     EVP_PKEY *pkey = NULL;
     X509 *certX509 = NULL;
