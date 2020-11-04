@@ -1,6 +1,6 @@
 package com.smartdevicelink.sdlsecurity;
 
-import android.util.Log;
+import com.smartdevicelink.util.DebugTool;
 
 import org.json.JSONObject;
 
@@ -49,7 +49,7 @@ class CertificateManager {
 
 
                     if (urlConnection.getResponseCode() != HttpURLConnection.HTTP_OK) {
-                        Log.e(TAG, "Server error: " + urlConnection.getResponseCode());
+                        DebugTool.logError(TAG, "Server error: " + urlConnection.getResponseCode());
                         listener.onFail("Failed to download the certificate");
                         return;
                     }
@@ -75,7 +75,7 @@ class CertificateManager {
                     listener.onSuccess(certBuffer);
                 } catch (Exception e) {
                     e.printStackTrace();
-                    Log.e(TAG, e.getMessage());
+                    DebugTool.logError(TAG, e.getMessage());
                     listener.onFail("Failed to download the certificate");
                 } finally {
                     if (urlConnection != null) {
