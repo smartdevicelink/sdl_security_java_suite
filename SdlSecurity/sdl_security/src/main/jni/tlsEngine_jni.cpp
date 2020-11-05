@@ -8,7 +8,7 @@
         jsize len = env->GetArrayLength (cert_buffer);
         jbyte *buf = env->GetByteArrayElements(cert_buffer, 0);
 
-        bool success = initialize(buf, len, is_client);
+        bool success = initialize(env, buf, len, is_client);
 
         env->ReleaseByteArrayElements(cert_buffer, buf, 0);
 
