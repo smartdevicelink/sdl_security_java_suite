@@ -1,9 +1,8 @@
 package com.smartdevicelink.sdlsecurity;
 
-import android.util.Log;
-
 import com.smartdevicelink.protocol.enums.SessionType;
 import com.smartdevicelink.security.SdlSecurityBase;
+import com.smartdevicelink.util.DebugTool;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,7 +26,7 @@ public class SdlSecurity extends SdlSecurityBase {
         this.state = STATE_DISCONNECTED;
 
         nativeSSL = new NativeSSL();
-        Log.i(TAG, "Downloading certificate");
+        DebugTool.logInfo(TAG, "Downloading certificate");
         CertificateManager.downloadCert(Constants.CERT_URL, getAppId(), new DownloadListener() {
             @Override
             public void onSuccess(byte[] certBuffer) {
@@ -36,7 +35,7 @@ public class SdlSecurity extends SdlSecurityBase {
                     SdlSecurity.this.state = STATE_INITIALIZED;
                 } else {
                     SdlSecurity.this.state = STATE_DISCONNECTED;
-                    Log.e(TAG, "nativeSSL.initialize() failed");
+                    DebugTool.logError(TAG, "nativeSSL.initialize() failed");
                 }
                 handleInitResult(success);
             }
@@ -45,7 +44,7 @@ public class SdlSecurity extends SdlSecurityBase {
             public void onFail(String error) {
                 SdlSecurity.this.state = STATE_DISCONNECTED;
                 handleInitResult(false);
-                Log.e(TAG, "onFail: " + error);
+                DebugTool.logError(TAG, "onFail: " + error);
             }
         });
     }
@@ -53,7 +52,7 @@ public class SdlSecurity extends SdlSecurityBase {
     @Override
     public Integer runHandshake(byte[] inputData, byte[] outputData) {
         if (this.state == STATE_DISCONNECTED){
-            Log.e(TAG, "Security not initialized");
+            DebugTool.logError(TAG, "Security not initialized");
             return null;
         }
         return nativeSSL.runHandshake(inputData, outputData);
@@ -62,7 +61,7 @@ public class SdlSecurity extends SdlSecurityBase {
     @Override
     public Integer encryptData(byte[] inputData, byte[] outputData) {
         if (this.state == STATE_DISCONNECTED){
-            Log.e(TAG, "Security not initialized");
+            DebugTool.logError(TAG, "Security not initialized");
             return null;
         }
         return nativeSSL.encryptData(inputData, outputData);
@@ -71,7 +70,7 @@ public class SdlSecurity extends SdlSecurityBase {
     @Override
     public Integer decryptData(byte[] inputData, byte[] outputData) {
         if (this.state == STATE_DISCONNECTED){
-            Log.e(TAG, "Security not initialized");
+            DebugTool.logError(TAG, "Security not initialized");
             return null;
         }
         return nativeSSL.decryptData(inputData, outputData);
