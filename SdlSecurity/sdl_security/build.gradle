@@ -35,5 +35,5 @@ android {
 dependencies {
     api fileTree(dir: 'libs', include: ['*.jar'])
     api 'androidx.appcompat:appcompat:1.2.0'
-    api 'com.smartdevicelink:sdl_android:RC3_5.0.0'
+    api 'com.smartdevicelink:sdl_android:5.0.0'
 }
