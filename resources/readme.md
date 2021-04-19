@@ -1,7 +1,7 @@
 # SDL Security Java Suite
 
 ## Sdl Core Setup
-* Copy the sample `client.crt` & `client.key` to core's build `bin` folder
+* Copy the sample `client.crt` & `client.key` to core's build `bin` folder and remove the existing `mycert.pem` & `mykey.pem` certificates
 
 * Update `CertificatePath` & `KeyPath` in `smartDeviceLink.ini` to match the files names
 ```
@@ -37,7 +37,7 @@ builder.setSdlSecurity(secList, null);
 
 * Update the SDL Server endpoint in `Constants.java` to download the certificate. Also the certificate passphrase should be updated
 
-Note: For testing purposes only, you can use the sample JSON response file with an api mocking service like `mocky.io`. If you want to use the sample response, the `appId` for your sdl app should be set to `773692255`. And the passphrase should be set to `CERT_PASS = "password"`
+Note: For testing purposes only, you can use the sample JSON response file with an api mocking service like `mocky.io`. If you want to use the sample response, the `appId` for your sdl app should be set to `caaf9c76-5a2e-4fa6-af4d-81279de9ca8c`. And the passphrase should be set to `CERT_PASS = "password"`
 
 * Use a feature that uses encryption (like RPC protection or encrypted video streaming)
 
