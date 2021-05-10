@@ -241,8 +241,8 @@ bool initialize(JNIEnv* env, void* cert_buffer, int cert_len, bool is_client) {
     char* cert_issuer = X509_NAME_oneline(X509_get_issuer_name(certX509), NULL, 0);
     if (strcmp(cert_issuer, CERT_ISSUER) != 0) {
         printf("Error in verifying issuer name. Expected %s but found %s\n", CERT_ISSUER, cert_issuer);
-        // we are only printing error message in that case to make testing easier
-        // it should stop initialization and return false in production libraries
+        clean_up_initialization(certX509, rsa, p12, pbio, pkey);
+        return false;
     }
     
     rsa = EVP_PKEY_get1_RSA(pkey);
